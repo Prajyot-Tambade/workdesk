@@ -17,9 +17,9 @@ connect();
 //   });
 // }
 
-export async function POST(request: NextRequest) {
+export async function POST(req: NextRequest) {
   try {
-    const userId = getDataFromToken(request);
+    const userId = getDataFromToken(req);
     if (!userId) {
       return NextResponse.json({ error: "Invalid token" }, { status: 400 });
     }

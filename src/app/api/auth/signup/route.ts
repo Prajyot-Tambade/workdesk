@@ -6,9 +6,9 @@ import { sendEmail } from '@/utils/mailer'
 
 connect()
 
-export async function POST(request: NextRequest) {
+export async function POST(req: NextRequest) {
   try {
-    const {username, email, password} = await request.json()
+    const {username, email, password} = await req.json()
 
     const user = await User.findOne({email})
 

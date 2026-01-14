@@ -10,9 +10,9 @@ interface tokenPayloadType {
   id: string
 }
 
-export async function POST(request: NextRequest) {
+export async function POST(req: NextRequest) {
   try {
-    const { email, password } = await request.json();
+    const { email, password } = await req.json();
     const user = await User.findOne({ email }).select("+password");
 
     if (!user) {

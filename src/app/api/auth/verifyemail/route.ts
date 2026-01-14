@@ -4,9 +4,9 @@ import { NextRequest, NextResponse } from "next/server";
 
 connect();
 
-export async function POST(request: NextRequest) {
+export async function POST(req: NextRequest) {
   try {
-    const { token } = await request.json();
+    const { token } = await req.json();
 
     const user = await User.findOne({
       verifyToken: token,
