@@ -4,8 +4,12 @@ import type { NextRequest } from "next/server";
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
+  if (pathname.startsWith("/api")) {
+    return NextResponse.next();
+  }
+
   // Define only public paths
-  const publicPaths = ["/login", "/signup", "/verifyemail"];
+  const publicPaths = ["/","/login", "/signup", "/verifyemail", ];
   const isPublicPath = publicPaths.includes(pathname);
 
   const token = request.cookies.get("token")?.value;
@@ -26,6 +30,7 @@ export function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    "/((?!_next/static|_next/image|favicon.ico).*)",
+    // Match everything EXCEPT the excluded paths
+    "/((?!api|_next/static|_next/image|favicon\\.ico|.*\\.(?:png|jpg|jpeg|gif|svg|ico|webp|avif)$).*)",
   ],
 };

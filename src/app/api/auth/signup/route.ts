@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
 
     const user = await User.findOne({email})
 
-    if (user) return NextResponse.json({error: 'User already exits'}, {status: 400})
+    if (user) return NextResponse.json({error: 'User already exits'}, {status: 409})
 
     const salt = await bcrypt.genSalt(10);
 
