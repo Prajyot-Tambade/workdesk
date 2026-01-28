@@ -1,10 +1,16 @@
 import Link from "next/link";
 import { Button } from "./button";
+import WorkDesk from "../../../public/WorkDesk";
 
 const Navbar = () => {
   return (
     <header className="container mx-auto py-4 flex justify-between">
-      <Link href="/"><h2 className="text-2xl font-semibold">Workdesk</h2></Link>
+      <div className="flex items-center gap-2">
+        <WorkDesk />
+        <Link href="/">
+          <h2 className="text-2xl font-display">Workdesk</h2>
+        </Link>
+      </div>
       <nav>
         <ul className="flex gap-4 items-center">
           <li className="">

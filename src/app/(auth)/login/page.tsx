@@ -15,22 +15,21 @@ const page = () => {
   const onLogin = async (loginData: FormData) => {
     const email = loginData.get("email");
     const password = loginData.get("password");
-
     try {
-      setLoading(true);
       if (email === "" || password === "") {
         toast.error("Enter email and password first");
-        setLoading(false);
         return;
       }
+      setLoading(true);
       await axios.post("/api/auth/login", { email, password });
 
-      setLoading(false);
       toast.success("Logged in successfully");
       router.push("/dashboard");
-    } catch (error: any) {
-      setError(error.response.data.error);
-      toast.error(error);
+    } catch (loginError: any) {
+      setError(loginError.response.data.error);
+      toast.error(loginError.response.data.error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -39,7 +38,14 @@ const page = () => {
       <div className="flex flex-col gap-2">
         <h2 className="text-2xl font-semibold">Login</h2>
         {error && <p className="text-red-600">{error}</p>}
-        <form action={onLogin} className="flex flex-col mt-4">
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            if (loading) return;
+            onLogin(new FormData(e.currentTarget));
+          }}
+          className="flex flex-col mt-4"
+        >
           <label className="block" htmlFor="email">
             Email
           </label>

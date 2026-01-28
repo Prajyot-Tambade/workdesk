@@ -16,7 +16,7 @@ export function middleware(request: NextRequest) {
 
   // If logged in and trying to access public page → redirect home
   if (isPublicPath && token) {
-    return NextResponse.redirect(new URL("/", request.url));
+    return NextResponse.redirect(new URL("/dashboard", request.url));
   }
 
   // If NOT logged in and trying to access protected page → login
