@@ -15,13 +15,6 @@ export type userType = {
   avatar?: string;
 };
 
-type UserLean = {
-  _id: any;
-  username: string;
-  email: string;
-  avatar?: string;
-};
-
 export const getCurrentUser = cache(async () => {
   connect();
   const cookieStore = await cookies();
@@ -33,7 +26,7 @@ export const getCurrentUser = cache(async () => {
 
     const userDoc = await User.findById(decoded.id)
       .select("_id username email avatar")
-      .lean<UserLean>();
+      .lean<userType>();
 
     if (!userDoc) return null;
 

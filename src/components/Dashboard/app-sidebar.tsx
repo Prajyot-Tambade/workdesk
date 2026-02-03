@@ -100,17 +100,12 @@ type navItemType = {
   isActive?: boolean;
 };
 
-type AppSidebarPropsType = {
-  user: userType;
-  props?: React.ComponentProps<typeof Sidebar>;
-};
-
 // export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-export function AppSidebar({ user, ...props }: AppSidebarPropsType) {
+export function AppSidebar() {
   const path = usePathname();
 
   return (
-    <Sidebar collapsible="icon" variant="inset" {...props}>
+    <Sidebar collapsible="icon" variant="inset">
       <SidebarHeader className="relative">
         <SidebarMenuButton asChild size="lg">
           <a href="#">
@@ -168,7 +163,7 @@ export function AppSidebar({ user, ...props }: AppSidebarPropsType) {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={user} />
+        <NavUser />
       </SidebarFooter>
     </Sidebar>
   );

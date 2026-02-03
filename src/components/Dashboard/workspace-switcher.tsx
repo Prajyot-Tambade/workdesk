@@ -9,7 +9,6 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
@@ -23,7 +22,6 @@ import {
   Dialog,
   DialogFooter,
   DialogHeader,
-  DialogTrigger,
   DialogClose,
   DialogContent,
   DialogDescription,
@@ -51,14 +49,13 @@ export function WorkspaceSwitcher({
 }) {
   const { isMobile } = useSidebar();
   const [activeTeam, setActiveTeam] = React.useState(workspaces[0]);
+  const [isDialogOpen, setIsDialogOpen] = React.useState(false);
 
   if (!activeTeam) {
     return null;
   }
 
-  const createNewWorkspace = (newWorkspaceData: FormData) => {
-    
-  }
+  const createNewWorkspace = (newWorkspaceData: FormData) => {};
 
   return (
     <SidebarMenu>
@@ -101,23 +98,25 @@ export function WorkspaceSwitcher({
               </DropdownMenuItem>
             ))}
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="gap-2 p-2">
+            <DropdownMenuItem
+              className="gap-2 p-2"
+              onClick={() => setIsDialogOpen(true)}
+            >
               <div className="flex size-6 items-center justify-center rounded-md border bg-transparent">
                 <Plus className="size-4" />
               </div>
-              <div className="text-muted-foreground font-medium">Add New Workspace</div>
-
-              <Dialog>
-          <DialogTrigger asChild>
-            <Button>
-              <Plus /> Add Project
-            </Button>
-          </DialogTrigger>
+              <div className="text-muted-foreground font-medium">
+                Add New Workspace
+              </div>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>
-              <DialogTitle>New Project</DialogTitle>
+              <DialogTitle>Create New Workspace</DialogTitle>
               <DialogDescription>
-                Added the details of your new project
+                Add the details of your new wrokspace
               </DialogDescription>
             </DialogHeader>
             <form
@@ -131,7 +130,7 @@ export function WorkspaceSwitcher({
                   <FieldGroup>
                     <Field>
                       <FieldLabel htmlFor="project-logo">
-                        Project-logo
+                        Project Icon
                       </FieldLabel>
                       <Input
                         name="project-logo"
@@ -139,32 +138,23 @@ export function WorkspaceSwitcher({
                         type="file"
                       />
                       <FieldDescription>
-                        Select a project logo to upload.
+                        Select a workspace icon.
                       </FieldDescription>
                     </Field>
                     <Field>
                       <FieldLabel htmlFor="project-title">
-                        Project Title <span className="text-destructive">*</span>
+                        Workspace Name
+                        <span className="text-destructive">*</span>
                       </FieldLabel>
                       <Input name="project-title" id="project-title" required />
                     </Field>
                     <Field>
                       <FieldLabel htmlFor="project-description">
-                        Project Description
+                        Workspace Description
                       </FieldLabel>
                       <Input
                         name="project-description"
                         id="project-description"
-                      />
-                    </Field>
-                    <Field>
-                      <FieldLabel htmlFor="project-deadline">
-                        Project Deadline
-                      </FieldLabel>
-                      <Input
-                        name="project-deadline"
-                        id="project-deadline"
-                        type="date"
                       />
                     </Field>
                   </FieldGroup>
@@ -179,9 +169,6 @@ export function WorkspaceSwitcher({
             </form>
           </DialogContent>
         </Dialog>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
       </SidebarMenuItem>
     </SidebarMenu>
   );

@@ -4,11 +4,11 @@ import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { sendEmail } from "@/utils/mailer";
 
-connect();
-
 export async function POST(req: NextRequest) {
   try {
-    const { username, email, password, avatar } = await req.json();
+    await connect();
+
+    const { username, email, password, avatarUrl } = await req.json();
 
     const user = await User.findOne({ email });
 
@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
     const hashedPassword = await bcrypt.hash(password, salt);
 
     const newUser = new User({
-      avatar: avatar,
+      avatar: avatarUrl,
       username,
       email,
       password: hashedPassword,
@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
     const savedUser = await newUser.save();
 
     // Verification Email
-    await sendEmail({ email, emailType: "VERIFY", userId: savedUser._id }); 
+    await sendEmail({ email, emailType: "VERIFY", userId: savedUser._id });
 
     return NextResponse.json({
       message: "User registered successfully",
