@@ -37,6 +37,8 @@ import {
 } from "@/components/ui/field";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
+import IconSelector from "../ui/iconSelector";
+import { IconName } from "lucide-react/dynamic";
 
 export function WorkspaceSwitcher({
   workspaces,
@@ -50,6 +52,7 @@ export function WorkspaceSwitcher({
   const { isMobile } = useSidebar();
   const [activeTeam, setActiveTeam] = React.useState(workspaces[0]);
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
+  const [icon, setIcon] = React.useState<IconName | undefined>(undefined);
 
   if (!activeTeam) {
     return null;
@@ -85,7 +88,7 @@ export function WorkspaceSwitcher({
             <DropdownMenuLabel className="text-muted-foreground text-xs">
               Workspaces
             </DropdownMenuLabel>
-            {workspaces.map((workspace, index) => (
+            {workspaces.map((workspace) => (
               <DropdownMenuItem
                 key={workspace.name}
                 onClick={() => setActiveTeam(workspace)}
@@ -132,11 +135,7 @@ export function WorkspaceSwitcher({
                       <FieldLabel htmlFor="project-logo">
                         Project Icon
                       </FieldLabel>
-                      <Input
-                        name="project-logo"
-                        id="project-logo"
-                        type="file"
-                      />
+                      <IconSelector selectedIcon={icon} onChange={setIcon} />
                       <FieldDescription>
                         Select a workspace icon.
                       </FieldDescription>
@@ -146,7 +145,7 @@ export function WorkspaceSwitcher({
                         Workspace Name
                         <span className="text-destructive">*</span>
                       </FieldLabel>
-                      <Input name="project-title" id="project-title" required />
+                      <Input name="project-title" id="project-title" />
                     </Field>
                     <Field>
                       <FieldLabel htmlFor="project-description">
