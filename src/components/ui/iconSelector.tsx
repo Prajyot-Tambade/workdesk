@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { DynamicIcon, type IconName } from "lucide-react/dynamic";
-import * as Icons from "lucide-react";
+import {
+  DynamicIcon,
+  type IconName,
+  dynamicIconImports,
+} from "lucide-react/dynamic";
 import { Field, FieldLabel } from "./field";
 import { Input } from "./input";
 import { Button } from "./button";
 import { ButtonGroup } from "./button-group";
 import { Popover, PopoverContent, PopoverTrigger } from "./popover";
 
-const toKebabCase = (str: string) =>
-  str
-    .replace(/Icon$/, "")
-    .replace(/([a-z0-9])([A-Z])/g, "$1-$2")
-    .toLowerCase();
+const DYNAMIC_ICON_NAMES = Object.keys(dynamicIconImports) as IconName[];
+const LIMIT = 100;
 
 interface IconSelectorProps {
   selectedIcon?: IconName;
@@ -21,30 +21,18 @@ interface IconSelectorProps {
 const IconSelector = ({ selectedIcon, onChange }: IconSelectorProps) => {
   const [search, setSearch] = useState("");
   const [open, setOpen] = useState(false);
-  const [allIcons, setAllIcons] = useState<IconName[]>([]);
   const [iconNames, setIconNames] = useState<IconName[]>([]);
-  const LIMIT = 100;
 
   useEffect(() => {
-    const icons = Object.keys(Icons)
-      .filter((key) => key !== "createLucideIcon" && !key.endsWith("Icon"))
-      .map(toKebabCase) as IconName[];
-
-    setAllIcons(icons);
-    setIconNames(icons);
-  }, []);
-
-  useEffect(() => {
+    const q = search.toLowerCase();
     const timer = setTimeout(() => {
       setIconNames(
-        allIcons.filter((icon) =>
-          icon.toLowerCase().includes(search.toLowerCase()),
-        ),
+        DYNAMIC_ICON_NAMES.filter((icon) => icon.includes(q)),
       );
     }, 300);
 
     return () => clearTimeout(timer);
-  }, [search, allIcons]);
+  }, [search]);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -84,18 +72,22 @@ const IconSelector = ({ selectedIcon, onChange }: IconSelectorProps) => {
           </Field>
 
           <div className="mt-8 grid grid-cols-5 gap-2 gap-y-8">
-            {iconNames.slice(0, LIMIT).map((icon, index) => (
-              <DynamicIcon
-                key={`${icon}-${index}`}
-                name={icon}
-                color="#808080"
-                size={32}
-                onClick={() => {
-                  onChange(icon);
-                  setOpen(false);
-                }}
-              />
-            ))}
+            {iconNames.length === 0 ? (
+              <h3 className="text-[#808080] col-span-3">No icons found</h3>
+            ) : (
+              iconNames.slice(0, LIMIT).map((icon, index) => (
+                <DynamicIcon
+                  key={`${icon}-${index}`}
+                  name={icon}
+                  color="#808080"
+                  size={32}
+                  onClick={() => {
+                    onChange(icon);
+                    setOpen(false);
+                  }}
+                />
+              ))
+            )}
           </div>
         </div>
       </PopoverContent>
