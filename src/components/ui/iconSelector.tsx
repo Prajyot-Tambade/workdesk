@@ -56,8 +56,8 @@ const IconSelector = ({ selectedIcon, onChange }: IconSelectorProps) => {
         </ButtonGroup>
       </PopoverTrigger>
 
-      <PopoverContent className="w-[400px] p-2">
-        <div className="h-[500px] overflow-y-scroll">
+      <PopoverContent className="w-[400px] p-4">
+        <div className="h-[400px] overflow-hidden">
           <Field className="sticky top-0 bg-neutral-900">
             <FieldLabel htmlFor="input-button-group">Search</FieldLabel>
             <ButtonGroup>
@@ -71,12 +71,13 @@ const IconSelector = ({ selectedIcon, onChange }: IconSelectorProps) => {
             </ButtonGroup>
           </Field>
 
-          <div className="mt-8 grid grid-cols-5 gap-2 gap-y-8">
+          <div className="mt-8 grid grid-cols-5 gap-2 gap-y-5 h-full overflow-scroll">
             {iconNames.length === 0 ? (
               <h3 className="text-[#808080] col-span-3">No icons found</h3>
             ) : (
               iconNames.slice(0, LIMIT).map((icon, index) => (
-                <DynamicIcon
+                <div className="flex justify-center">
+                  <DynamicIcon
                   key={`${icon}-${index}`}
                   name={icon}
                   color="#808080"
@@ -86,6 +87,7 @@ const IconSelector = ({ selectedIcon, onChange }: IconSelectorProps) => {
                     setOpen(false);
                   }}
                 />
+                </div>
               ))
             )}
           </div>
